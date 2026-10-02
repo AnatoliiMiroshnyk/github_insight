@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Analyze public GitHub profiles, languages, repositories and activity.">
+  <title>{{ app_name }}</title>
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}">
+  <script defer src="{{ url_for('static', path='/js/app.js') }}"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="GitHub Insight home">
+      <svg class="brand-mark" viewBox="0 0 36 36" aria-hidden="true"><path d="M7 27V9h8v18H7Zm14 0V15h8v12h-8Z"/><path d="M5 30h26" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+      <span>GitHub Insight</span>
+    </a>
+    <div class="topbar-actions">
+      <a class="icon-button" href="/docs" target="_blank" rel="noopener" aria-label="Open API documentation" title="API documentation">API</a>
+      <button class="icon-button" id="theme-toggle" aria-label="Switch color theme" title="Switch theme">
+        <span id="theme-icon" aria-hidden="true">◐</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main" class="shell">
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">Public profile intelligence</p>
+      <h1 id="page-title">See the engineering story behind a GitHub profile.</h1>
+      <p>Inspect repository traction, language distribution and recent public activity in one focused report.</p>
+      <form id="analysis-form" class="search-form" novalidate>
+        <label class="sr-only" for="username">GitHub username</label>
+        <span class="search-prefix" aria-hidden="true">github.com/</span>
+        <input id="username" name="username" autocomplete="off" maxlength="39" placeholder="octocat" required>
+        <button class="primary-button" type="submit">Analyze profile</button>
+      </form>
+      <p id="form-error" class="form-error" role="alert"></p>
+    </section>
+
+    <section id="loading" class="loading-panel hidden" aria-live="polite" aria-label="Analysis in progress">
+      <div class="spinner"></div><div><strong>Reading the public profile</strong><p>Collecting repositories, language bytes and recent events…</p></div>
+    </section>
+
+    <section id="error-state" class="state-panel hidden" aria-live="assertive">
+      <h2>We could not build this report</h2><p id="error-message"></p>
+      <button class="secondary-button" id="retry-button" type="button">Try again</button>
+    </section>
+
+    <section id="report" class="report hidden" aria-labelledby="report-title">
+      <article class="profile-card">
+        <img id="avatar" src="" width="112" height="112" alt="GitHub profile avatar">
+        <div class="profile-copy"><p class="eyebrow" id="username-label"></p><h2 id="report-title"></h2><p id="bio"></p><div id="profile-meta" class="meta-row"></div></div>
+        <a id="github-link" class="secondary-button" target="_blank" rel="noopener">View on GitHub</a>
+      </article>
+
+      <div class="kpi-grid" id="kpi-grid" aria-label="Profile totals"></div>
+
+      <div class="analytics-grid">
+        <article class="panel language-panel"><header><div><p class="eyebrow">Code footprint</p><h2>Languages</h2></div></header><div id="language-chart"></div></article>
+        <article class="panel activity-panel"><header><div><p class="eyebrow">Latest public events</p><h2>Activity mix</h2></div></header><div id="activity-chart"></div></article>
+      </div>
+
+      <article class="panel repository-panel">
+        <header class="panel-header"><div><p class="eyebrow">Portfolio signal</p><h2>Top repositories</h2></div><a id="csv-link" class="text-link">Export CSV ↓</a></header>
+        <div class="table-scroll"><table><thead><tr><th>Repository</th><th>Language</th><th>Stars</th><th>Forks</th><th>Updated</th></tr></thead><tbody id="repository-body"></tbody></table></div>
+      </article>
+
+      <article class="panel insights-panel"><p class="eyebrow">Automated observations</p><h2>What stands out</h2><ul id="insight-list"></ul><p id="cache-note" class="cache-note"></p></article>
+    </section>
+
+    <section class="history-section" aria-labelledby="history-title">
+      <div class="section-heading"><div><p class="eyebrow">Local snapshots</p><h2 id="history-title">Recent analyses</h2></div><button id="refresh-history" class="text-link" type="button">Refresh</button></div>
+      <div id="history-list" class="history-list"><p class="muted">No analyses saved yet.</p></div>
+    </section>
+  </main>
+  <footer><span>GitHub Insight · v{{ version }}</span><span>Data from the GitHub REST API</span></footer>
+</body>
+</html>
