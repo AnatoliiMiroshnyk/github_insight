@@ -2,7 +2,6 @@
 
 A production-structured FastAPI web service that converts a public GitHub profile into an interactive engineering portfolio report: repository traction, language distribution, recent public activity, automated observations, snapshots and CSV export.
 
-> Portfolio project by Anatolii Miroshnyk. It demonstrates async API integration, layered architecture, data aggregation, caching, persistence, responsive UI, automated tests and CI.
 
 ## Highlights
 
